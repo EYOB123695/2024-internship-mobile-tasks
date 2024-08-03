@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TextWidget extends StatelessWidget {
-  final VoidCallback onFilterPressed; // Corrected to VoidCallback
+  final VoidCallback onFilterPressed; // Correctly defined
 
   const TextWidget({super.key, required this.onFilterPressed});
 
@@ -35,7 +35,7 @@ class TextWidget extends StatelessWidget {
                 Icons.filter_list,
                 color: Colors.white,
               ),
-              onPressed: onFilterPressed,
+              onPressed: onFilterPressed, // This should trigger _openFilter
             ),
           ),
         ],
