@@ -1,0 +1,10 @@
+{
+ 
+      
+        "id": "tId",
+        "name": "name",
+        "description": "description",
+        "price": 400,
+        "imageUrl": "https://product.image.com/id"
+      
+}

@@ -1,7 +1,11 @@
+// search_product.dart
 import 'package:flutter/material.dart';
 import 'bottomfilter.dart';
 import 'product.dart';
 import 'text_widget.dart';
+import 'product_provider.dart';
+import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 
 class SearchProduct extends StatefulWidget {
   const SearchProduct({super.key});
@@ -59,24 +63,21 @@ class _SearchProductState extends State<SearchProduct> {
         child: Column(
           children: [
             TextWidget(onFilterPressed: _openFilter),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.all(12.0),
-              child: const ProductCard(
-                imageAssetPath: 'images/image.png',
-                texts: [
-                  'Derby Leather Shoes',
-                  '120\$',
-                  'Men’s shoe',
-                  '4.0',
-                ],
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            Container(
-              width: double.infinity,
-              margin: const EdgeInsets.all(12.0),
-              child: Image.asset('images/image.png'),
+            Consumer<ProductProvider>(
+              builder: (context, productProvider, child) {
+                return Column(
+                  children: productProvider.products.map((product) {
+                    return Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.all(12.0),
+                      child: ProductCard(
+                        imageFilePath: product.imageFilePath,
+                        texts: product.texts,
+                      ),
+                    );
+                  }).toList(),
+                );
+              },
             ),
           ],
         ),

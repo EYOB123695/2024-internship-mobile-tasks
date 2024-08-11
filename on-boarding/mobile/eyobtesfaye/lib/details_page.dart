@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:io';
 
 class DetailsPage extends StatefulWidget {
-  final String imagepath;
-  const DetailsPage({super.key, required this.imagepath});
+  const DetailsPage({super.key});
 
   @override
   State<DetailsPage> createState() => _DetailsPageState();
@@ -12,11 +12,16 @@ class DetailsPage extends StatefulWidget {
 class _DetailsPageState extends State<DetailsPage> {
   // To keep track of the selected size
   int _selectedSize = 0;
+  late String imagePath;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    imagePath = ModalRoute.of(context)?.settings.arguments as String;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final String imagepath =
-        ModalRoute.of(context)!.settings.arguments as String;
     return Scaffold(
       body: Stack(
         children: [
@@ -25,14 +30,20 @@ class _DetailsPageState extends State<DetailsPage> {
             top: 0,
             left: 0,
             right: 0,
-            child: Image.asset(
-              imagepath, // Replace with your image path
-              fit: BoxFit.cover, // Adjust to BoxFit.contain if needed
-              height: 240, // Adjust height as needed
-              width: MediaQuery.of(context).size.width,
-            ),
+            child: imagePath.startsWith('/')
+                ? Image.file(
+                    File(imagePath),
+                    fit: BoxFit.cover,
+                    height: 240,
+                    width: MediaQuery.of(context).size.width,
+                  )
+                : Image.asset(
+                    imagePath,
+                    fit: BoxFit.cover,
+                    height: 240,
+                    width: MediaQuery.of(context).size.width,
+                  ),
           ),
-          // const SizedBox(height: 10),
           // Back button container
           Positioned(
             top: 40,

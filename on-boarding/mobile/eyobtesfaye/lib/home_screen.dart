@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'product_provider.dart'; // Ensure correct import
 import 'product.dart';
-import 'add_product.dart'; // Ensure to import the AddProductScreen
+import 'add_product.dart';
 import 'search_product.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                     text: 'Yohannes',
                     style: GoogleFonts.sora(
                       fontSize: 12,
-                      fontWeight: FontWeight.w600, // Apply bold weight here
+                      fontWeight: FontWeight.w600,
                       color: Colors.black,
                     ),
                   ),
@@ -51,11 +51,11 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(right: 13.0), // Add right padding
+            padding: const EdgeInsets.only(right: 13.0),
             child: IconButton(
               icon: const Icon(
                 Icons.notifications_none,
-                color: Colors.black, // No color fill
+                color: Colors.black,
               ),
               onPressed: () {},
             ),
@@ -65,7 +65,7 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const SizedBox(height: 20), // Space above the row
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -88,95 +88,52 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 20), // Space between row and product cards
+          const SizedBox(height: 20),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(8), // Adjust padding here if needed
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 2.0, horizontal: 13.0), // Add vertical padding
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                        '/details',
-                        arguments: 'images/image.png',
-                      );
-                    },
-                    child: ProductCard(
-                      imageAssetPath: 'images/image.png',
-                      texts: [
-                        'Derby Leather Shoes',
-                        '120\$',
-                        'Men’s shoe',
-                        '4.0',
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 2.0, horizontal: 13.0), // Add vertical padding
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                        '/details',
-                        arguments: 'images/hat.png',
-                      );
-                    },
-                    child: ProductCard(
-                      imageAssetPath: 'images/hat.jpg',
-                      texts: [
-                        'Product 2',
-                        '150\$',
-                        'Women’s shoe',
-                        '4.5',
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 2.0, horizontal: 13.0), // Add vertical padding
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                        '/details',
-                        arguments: 'images/bag.png',
-                      );
-                    },
-                    child: ProductCard(
-                      imageAssetPath: 'images/bag.jpg',
-                      texts: [
-                        'Product 3',
-                        '200\$',
-                        'Kids’ shoe',
-                        '4.7',
-                      ],
-                    ),
-                  ),
-                ),
-                // Add more ProductCard widgets as needed
-              ],
+            child: Consumer<ProductProvider>(
+              builder: (context, productProvider, child) {
+                return ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  itemCount: productProvider.products.length,
+                  itemBuilder: (context, index) {
+                    final product = productProvider.products[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 2.0, horizontal: 13.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                            '/details',
+                            arguments: product.imageFilePath,
+                          );
+                        },
+                        child: ProductCard(
+                          imageFilePath: product.imageFilePath,
+                          texts: product.texts,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ),
         ],
       ),
       floatingActionButton: Container(
-        width: 72, // Size of the button
-        height: 72, // Size of the button
+        width: 72,
+        height: 72,
         decoration: BoxDecoration(
           color: Color(0xFF3F51F3),
-          shape: BoxShape.circle, // Ensures circular shape
+          shape: BoxShape.circle,
         ),
         child: FloatingActionButton(
           onPressed: () {
             Navigator.of(context).pushNamed('/add-product');
           },
-          backgroundColor:
-              Colors.transparent, // Make the background transparent
+          backgroundColor: Colors.transparent,
           child: const Icon(Icons.add, color: Colors.white),
-          elevation: 0, // Remove elevation to match the container's appearance
+          elevation: 0,
         ),
       ),
     );

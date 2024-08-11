@@ -1,25 +1,39 @@
-import 'package:eyobtesfaye/details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:io';
+import "product_provider.dart";
 
 class ProductCard extends StatelessWidget {
-  final String imageAssetPath;
+  final String? imageAssetPath;
+  final String? imageFilePath;
   final List<String> texts;
 
   const ProductCard({
     Key? key,
-    required this.imageAssetPath,
+    this.imageAssetPath,
+    this.imageFilePath,
     required this.texts,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Determine the image path to pass as an argument
+    final String? imagePath = imageAssetPath ?? imageFilePath;
+
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(
-          '/details',
-          arguments: imageAssetPath, // Passing the image path as an argument
-        );
+        if (imagePath != null) {
+          Navigator.of(context).pushNamed(
+            '/details',
+            arguments: imagePath, // Passing the image path as an argument
+          );
+        } else {
+          // Handle the case when there is no image path
+          // For example, you might show a message or navigate to a default route
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('No image available')),
+          );
+        }
       },
       child: Card(
         shape: RoundedRectangleBorder(
@@ -29,17 +43,26 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-              child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: Image.asset(
-                  imageAssetPath,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                ),
-              ),
-            ),
+            imagePath != null
+                ? ClipRRect(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(10)),
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: imageAssetPath != null
+                          ? Image.asset(
+                              imageAssetPath!,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                            )
+                          : Image.file(
+                              File(imageFilePath!),
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                            ),
+                    ),
+                  )
+                : Container(), // Default empty container if no image
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -111,4 +134,3 @@ class ProductCard extends StatelessWidget {
     );
   }
 }
-//defrgthyjukghjy

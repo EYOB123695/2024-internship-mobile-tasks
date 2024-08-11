@@ -1,12 +1,22 @@
 import 'package:eyobtesfaye/details_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'home_screen.dart';
 import 'add_product.dart';
 import 'search_product.dart';
 import 'custom_page_route.dart';
+import 'details_page.dart';
+import 'product_provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ProductProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,8 +32,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/':
-            return CustomPageRoute(
-                page: const HomeScreen(), settings: settings);
+            return CustomPageRoute(page: HomeScreen(), settings: settings);
           case '/add-product':
             return CustomPageRoute(
                 page: const AddProductScreen(), settings: settings);
@@ -32,9 +41,9 @@ class MyApp extends StatelessWidget {
                 page: const SearchProduct(), settings: settings);
           case '/details':
             // Ensure the argument is properly passed
-            final imagepath = settings.arguments as String?;
+            //final imagePath = settings.arguments as String?;
             return CustomPageRoute(
-              page: DetailsPage(imagepath: imagepath ?? ''),
+              page: const DetailsPage(),
               settings: settings,
             );
           default:
