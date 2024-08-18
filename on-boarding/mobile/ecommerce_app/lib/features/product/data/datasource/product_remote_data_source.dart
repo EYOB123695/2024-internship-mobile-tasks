@@ -93,16 +93,29 @@ class ProductRemoteDataSourceImpl extends ProductRemoteDataSource {
   @override
   Future<ProductModel> updateProducts(ProductModel product) async {
     try {
-      final uri = Urls.insertProducts();
+      final uri = Uri.parse(Urls.updateProducts() + '/${product.id}');
+      print("getting into remote");
+      // Create a multipart request
       final response = await client.put(
-        Uri.parse('$uri/${product.id}'),
-        body: jsonEncode(product.toJson()),
+        uri,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(product.toJson()),
       );
 
+      print(response.body);
+
+      // Check the response
       if (response.statusCode == 200) {
-        return ProductModel.fromJson(jsonDecode(response.body)['data']);
+        print("if");
+        var jsonData = json.decode(response.body);
+        var productData = jsonData['data'];
+        var x = ProductModel.fromJson(productData);
+        print('x $x');
+        return x;
       } else {
-        throw ServerException(response.body);
+        print("else");
+        throw ServerException(
+            response.reasonPhrase ?? "Error occurred while updating");
       }
     } catch (e) {
       throw ServerException(e.toString());

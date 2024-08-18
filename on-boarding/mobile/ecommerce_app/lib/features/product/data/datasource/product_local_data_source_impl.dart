@@ -12,7 +12,7 @@ class ProductLocalDataSourceImpl extends ProductLocalDataSource {
     required SharedPreferences sharedpreferences,
   }) : _sharedPreferences = sharedpreferences;
 
-  _getProductCachekey(String id) => '${productCaheKey}_$id';
+  _getProductCachekey(String? id) => '${productCaheKey}_$id';
 
   @override
   Future<void> cacheProduct(ProductModel product) async {

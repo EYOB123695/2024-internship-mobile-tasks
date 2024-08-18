@@ -10,7 +10,7 @@ class Product {
 class ProductProvider with ChangeNotifier {
   List<Product> _products = [
     Product(
-        imageFilePath: 'images/image.png',
+        imageFilePath: '"C:\Users\lenovo\Desktop\bag.jpg"',
         texts: ['Product 1', 'Description 1', '', '']),
     Product(
         imageFilePath: 'images/hat.jpg',

@@ -7,4 +7,5 @@ class Urls {
 
   static String getProducts() => baseUrl;
   static String insertProducts() => baseUrl;
+  static String updateProducts() => baseUrl;
 }
