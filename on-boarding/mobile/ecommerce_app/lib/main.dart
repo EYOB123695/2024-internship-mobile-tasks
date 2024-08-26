@@ -3,6 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
+import 'features/authentication/presentation/bloc/bloc/signin_bloc.dart';
+import 'features/authentication/presentation/bloc/bloc/signup_bloc.dart';
+import 'features/authentication/presentation/pages/sign_in.dart';
+import 'features/authentication/presentation/pages/sign_up.dart';
+import 'features/authentication/presentation/pages/splashscreen.dart';
 import 'features/product/domain/entities/product_entity.dart';
 import 'features/product/domain/usecases/deleteproduct.dart';
 import 'features/product/domain/usecases/get_products.dart';
@@ -49,6 +54,12 @@ void main() async {
         BlocProvider(
           create: (context) => GetIt.instance<SearchproductBloc>(),
         ),
+        BlocProvider(
+          create: (context) => GetIt.instance<SigninBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => GetIt.instance<SignupBloc>(),
+        ),
       ],
       child: MyApp(),
     ),
@@ -65,7 +76,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter task',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: HomeScreen(),
-      initialRoute: '/',
+      initialRoute: '/Splashscreen',
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/':
@@ -85,6 +96,22 @@ class MyApp extends StatelessWidget {
           case '/update-products':
             return CustomPageRoute(
               page: const UpdateProductScreen(),
+              settings: settings,
+            );
+          case '/signin':
+            return CustomPageRoute(
+              page: const SignInScreen(),
+              settings: settings,
+            );
+          case '/Splashscreen':
+            return CustomPageRoute(
+              page: const Splashscreen(),
+              settings: settings,
+            );
+
+          case '/signup':
+            return CustomPageRoute(
+              page: const SignUpScreen(),
               settings: settings,
             );
 

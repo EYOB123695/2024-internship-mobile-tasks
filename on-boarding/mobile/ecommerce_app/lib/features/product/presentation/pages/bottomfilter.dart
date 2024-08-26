@@ -56,7 +56,7 @@ class BottomFilter extends StatelessWidget {
             child: Slider(
               value: sliderValue,
               min: 0,
-              max: 100,
+              max: 10000,
               divisions: 10,
               label: sliderValue.round().toString(),
               onChanged: onSliderChanged,

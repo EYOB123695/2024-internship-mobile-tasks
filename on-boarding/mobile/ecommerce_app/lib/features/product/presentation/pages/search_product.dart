@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../domain/entities/product_entity.dart';
 import '../bloc/bloc/searchproduct_bloc.dart';
 import '../widgets/text_widget.dart';
 import 'bottomfilter.dart';
-import 'product.dart';
+import 'product.dart'; // Ensure import path is correct
 
 class SearchProduct extends StatefulWidget {
   final List<ProductEntity> products;
@@ -80,30 +81,16 @@ class _SearchProductState extends State<SearchProduct> {
                 TextWidget(onFilterPressed: _openFilter),
                 const SizedBox(height: 20), // Add some spacing
                 Expanded(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 13.0),
-                    itemCount: state.filteredProducts.length,
-                    itemBuilder: (context, index) {
-                      final product = state.filteredProducts[index];
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
-                        child: Container(
-                          height: 1500,
-                          child: ProductCard(
-                            // Pass individual product as a list
-                            products: [product],
-                          ),
-                        ),
-                      );
-                    },
+                  child: ProductCard(
+                    products: state.filteredProducts, // Pass the filtered list
                   ),
                 ),
               ],
             );
           } else if (state is SearchproductLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else {
-            return Center(child: Text('Something went wrong'));
+            return const Center(child: Text('Something went wrong'));
           }
         },
       ),
